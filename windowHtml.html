@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Shopping List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+<body>
+    <nav class="nav-wrapper">
+        <a href="" class="brand-logo center">Shopping List</a> /
+    </nav>
+    <ul></ul>
+
+    <script>
+        const electron = require("electron")
+        const {ipcRenderer} = electron
+
+        const ul = document.querySelector('ul')
+
+        // Add item
+        ipcRenderer.on("item:add", function(e,item){
+
+            ul.className = "collection"
+            const li = document.createElement('li')
+            li.className = "collection-item"
+            const textNode = document.createTextNode(item)
+            li.appendChild(textNode)
+            ul.appendChild(li)
+        })
+
+        // Clear items
+        ipcRenderer.on("item:clear", function(e){
+            ul.innerHTML = ""
+        })
+
+        // Remove and Item
+        ul.addEventListener('dblclick',removeItem) // When double clicked
+
+        function removeItem(e){
+            e.target.remove() // This will actually remove the specific li element
+            if(ul.children.length == 0){
+                ul.className = ''
+            }
+        }
+       
+
+    </script>
+</body>
+</html>
